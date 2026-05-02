@@ -75,12 +75,7 @@ const FileUploader: React.FC<Props> = ({ onFileSelect }) => {
         </div>
       </div>
 
-      <div className="mt-8 pt-8 border-t border-slate-100">
-        <p className="text-xs text-slate-400 font-mono flex items-center justify-center">
-          <FileCode className="w-4 h-4 mr-1.5" />
-          Maximum context window: 2.4Mb (Larger files auto-sampled)
-        </p>
-      </div>
+
     </div>
   );
 };

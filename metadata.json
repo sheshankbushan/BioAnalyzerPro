@@ -1,0 +1,6 @@
+{
+  "name": "BioAnalyzer Pro",
+  "description": "An advanced bacterial whole-genome analysis platform providing automated annotation, antimicrobial resistance detection, and comparative genomics using the BioGenomeAnalyzer expert system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

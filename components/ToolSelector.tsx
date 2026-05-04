@@ -79,8 +79,8 @@ const ToolSelector: React.FC<Props> = ({ selected, onChange, onRun, disabled }) 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-slate-900">Select Analysis Modules</h3>
-        <p className="text-sm text-slate-500">{selected.length} modules selected</p>
+        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50">Select Analysis Modules</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{selected.length} modules selected</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -95,20 +95,20 @@ const ToolSelector: React.FC<Props> = ({ selected, onChange, onRun, disabled }) 
               className={`text-left p-5 rounded-2xl border-2 transition-all relative overflow-hidden group
                 ${isSelected 
                   ? 'border-emerald-500 bg-emerald-50 shadow-sm ring-1 ring-emerald-500' 
-                  : 'border-slate-200 bg-white hover:border-slate-300 shadow-sm hover:shadow'
+                  : 'border-slate-200 dark:border-slate-700 dark:border-slate-800 bg-white dark:bg-slate-900 dark:bg-slate-950 hover:border-slate-300 dark:border-slate-600 shadow-sm hover:shadow'
                 }
                 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
               `}
             >
               <div className="flex items-start space-x-4">
                 <div className={`p-2.5 rounded-xl transition-colors
-                  ${isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200'}
+                  ${isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 group-hover:bg-slate-200 dark:bg-slate-700'}
                 `}>
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-bold text-slate-900">{tool.name}</p>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">{tool.description}</p>
+                  <p className="font-bold text-slate-900 dark:text-slate-50">{tool.name}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{tool.description}</p>
                 </div>
               </div>
               {isSelected && (
@@ -127,8 +127,8 @@ const ToolSelector: React.FC<Props> = ({ selected, onChange, onRun, disabled }) 
           disabled={selected.length === 0 || disabled}
           className={`px-10 py-4 rounded-2xl font-bold text-lg shadow-xl transition-all
             ${selected.length > 0 && !disabled
-              ? 'bg-slate-900 text-white hover:bg-slate-800 scale-105 active:scale-100'
-              : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+              ? 'bg-slate-900 dark:bg-slate-950 text-white hover:bg-slate-800 scale-105 active:scale-100'
+              : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
             }
           `}
         >

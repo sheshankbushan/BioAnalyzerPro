@@ -14,7 +14,7 @@ export class GenomeAnalysisError extends Error {
   }
 }
 
-const SYSTEM_INSTRUCTION = `You are BioGenomeAnalyzer Pro, an expert bioinformatics agent. You strictly replicate the results of industry-standard tools and databases.
+const SYSTEM_INSTRUCTION = `You are NizamWGS Pro, an expert bioinformatics agent. You strictly replicate the results of industry-standard tools and databases.
 
 SCIENTIFIC RIGOR & BIOPYTHON MANDATE:
 1. BIOPYTHON UTILIZATION:

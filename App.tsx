@@ -8,7 +8,36 @@ import GenomeDashboard from './components/GenomeDashboard';
 import ToolSelector from './components/ToolSelector';
 import HistoryPanel from './components/HistoryPanel';
 import { AnalysisErrorType, AnalysisErrorInfo } from './types';
-import { Activity, AlertCircle, Github, Database, Zap, ArrowLeft, HelpCircle, History, RefreshCcw, WifiOff, FileWarning, Timer } from 'lucide-react';
+import { AppLogo } from './components/AppLogo';
+import { Activity, AlertCircle, Github, Database, Zap, ArrowLeft, HelpCircle, History, RefreshCcw, WifiOff, FileWarning, Timer, Moon, Sun } from 'lucide-react';
+
+const LoginScreen = ({ onLogin, isDarkMode, toggleDarkMode }: { onLogin: () => void, isDarkMode: boolean, toggleDarkMode: () => void }) => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-800 font-sans px-4 relative">
+      <button
+        onClick={toggleDarkMode}
+        className="absolute top-6 right-6 p-3 rounded-full bg-white dark:bg-slate-900 shadow-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+      >
+        {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+      </button>
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 dark:bg-slate-950 p-10 rounded-[2rem] shadow-2xl border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-700">
+        <div className="flex flex-col items-center space-y-8 text-center">
+          <AppLogo className="h-28 w-auto text-emerald-600 drop-shadow-sm mb-4" />
+          <div className="space-y-3">
+            <h1 className="text-4xl font-black text-slate-900 dark:text-slate-50 tracking-tight">NizamWGS <span className="text-emerald-500">Pro</span></h1>
+            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium px-4">Advanced Bacterial Whole-Genome Analysis Platform</p>
+          </div>
+          <button 
+            onClick={onLogin}
+            className="w-full py-4 mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-lg rounded-2xl transition-all shadow-lg shadow-emerald-500/30 active:scale-95"
+          >
+            Enter Workspace
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<AnalysisStatus>(AnalysisStatus.IDLE);
@@ -21,6 +50,25 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<AnalysisHistoryItem[]>([]);
   const [isViewingHistory, setIsViewingHistory] = useState(false);
   const [isEngineReady, setIsEngineReady] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') return true;
+    if (saved === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
   // Initialize BioPython context
   useEffect(() => {
@@ -203,29 +251,39 @@ const App: React.FC = () => {
     }
   };
 
+  if (!isLoggedIn) {
+    return <LoginScreen onLogin={() => setIsLoggedIn(true)} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />;
+  }
+
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-slate-50">
-      <nav className="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-lg border-b border-slate-700">
+    <div className="min-h-screen flex flex-col font-sans bg-slate-50 dark:bg-slate-800">
+      <nav className="bg-slate-900 dark:bg-slate-950 text-white p-4 sticky top-0 z-50 shadow-lg border-b border-slate-700 dark:border-slate-800">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3 group cursor-pointer" onClick={reset}>
-            <div className="bg-emerald-500 p-2 rounded-lg group-hover:bg-emerald-400 transition-colors">
-              <Activity className="w-6 h-6 text-slate-900" />
+            <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 p-1 rounded-lg group-hover:bg-slate-100 dark:bg-slate-800 transition-colors">
+              <AppLogo className="h-8 w-auto text-slate-800 dark:text-white" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight">ModularBioAnalyzer <span className="text-emerald-400">Pro</span></h1>
+            <h1 className="text-xl font-bold tracking-tight">NizamWGS <span className="text-emerald-400">Pro</span></h1>
           </div>
           <div className="flex items-center space-x-4 md:space-x-6">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             <button 
               onClick={openHistory}
               className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-bold transition-all border
                 ${status === AnalysisStatus.HISTORY 
                   ? 'bg-emerald-600 border-emerald-500 text-white' 
-                  : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white'}
+                  : 'bg-slate-800 border-slate-700 dark:border-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'}
               `}
             >
               <History className="w-4 h-4" />
               <span>Archive</span>
               {history.length > 0 && (
-                <span className="bg-white/20 px-2 py-0.5 rounded-full text-[10px]">{history.length}</span>
+                <span className="bg-white dark:bg-slate-900 dark:bg-slate-950/20 px-2 py-0.5 rounded-full text-[10px]">{history.length}</span>
               )}
             </button>
             <a href="https://github.com/nf-core/bactopia" target="_blank" className="hidden md:flex items-center space-x-1 hover:text-emerald-400 transition-colors text-sm font-medium">
@@ -240,11 +298,11 @@ const App: React.FC = () => {
         {status === AnalysisStatus.IDLE && (
           <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in duration-700">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-                Modular Bacterial <br/> 
-                <span className="text-emerald-600">Genome Toolkit</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight">
+                NizamWGS Pro <br/> 
+                <span className="text-emerald-600">Dashboard</span>
               </h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
                 Replicating Proksee.ca and standard NCBI pipelines (Prokka, BLAST+, RGI, Roary).
                 Upload, select modules, and get high-precision results.
               </p>
@@ -272,22 +330,22 @@ const App: React.FC = () => {
 
         {status === AnalysisStatus.PARSED && currentStats && fileMeta && (
           <div className="max-w-5xl mx-auto space-y-8 animate-in slide-in-from-bottom-4">
-            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-1">{fileMeta.name}</h3>
-                <div className="flex items-center space-x-4 text-sm text-slate-500">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 mb-1">{fileMeta.name}</h3>
+                <div className="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
                   <span className="flex items-center"><Database className="w-4 h-4 mr-1" /> {(fileMeta.size / 1024).toFixed(2)} KB</span>
                   <span className="flex items-center font-mono text-emerald-600 font-bold bg-emerald-50 px-2 rounded">Quick Summary Calculated</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="text-center bg-slate-50 px-4 py-2 rounded-xl">
+                <div className="text-center bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-xl">
                   <p className="text-[10px] font-bold text-slate-400 uppercase">GC%</p>
-                  <p className="text-xl font-black text-slate-900">{currentStats.gcContent.toFixed(1)}%</p>
+                  <p className="text-xl font-black text-slate-900 dark:text-slate-50">{currentStats.gcContent.toFixed(1)}%</p>
                 </div>
-                <div className="text-center bg-slate-50 px-4 py-2 rounded-xl">
+                <div className="text-center bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-xl">
                   <p className="text-[10px] font-bold text-slate-400 uppercase">N50</p>
-                  <p className="text-xl font-black text-slate-900">{(currentStats.n50 / 1000).toFixed(1)}k</p>
+                  <p className="text-xl font-black text-slate-900 dark:text-slate-50">{(currentStats.n50 / 1000).toFixed(1)}k</p>
                 </div>
               </div>
             </div>
@@ -306,13 +364,13 @@ const App: React.FC = () => {
               <Activity className="w-full h-full text-emerald-600 animate-spin" />
               <Zap className="w-8 h-8 text-amber-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-900">Executing Module Pipeline</h3>
-            <p className="text-slate-500">Simulating {selectedTools.length} bioinformatics tools using expert rules.</p>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Executing Module Pipeline</h3>
+            <p className="text-slate-500 dark:text-slate-400">Simulating {selectedTools.length} bioinformatics tools using expert rules.</p>
           </div>
         )}
 
         {status === AnalysisStatus.ERROR && errorInfo && (
-          <div className="max-w-2xl mx-auto bg-white border border-red-100 p-10 rounded-3xl shadow-xl space-y-8 animate-in zoom-in-95 duration-300">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-slate-900 dark:bg-slate-950 border border-red-100 p-10 rounded-3xl shadow-xl space-y-8 animate-in zoom-in-95 duration-300">
             <div className="flex flex-col items-center text-center space-y-4">
               <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
                 errorInfo.type === AnalysisErrorType.NETWORK ? 'bg-amber-50' : 'bg-red-50'
@@ -327,16 +385,16 @@ const App: React.FC = () => {
                   <AlertCircle className="w-10 h-10 text-red-500" />
                 )}
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{errorInfo.message}</h3>
-              <p className="text-slate-600 max-w-md">{errorInfo.details || "We couldn't complete the genome analysis as requested."}</p>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">{errorInfo.message}</h3>
+              <p className="text-slate-600 dark:text-slate-400 max-w-md">{errorInfo.details || "We couldn't complete the genome analysis as requested."}</p>
             </div>
 
-            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 space-y-4 text-left">
-              <div className="flex items-center space-x-2 text-slate-900 font-bold text-sm">
+            <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 space-y-4 text-left">
+              <div className="flex items-center space-x-2 text-slate-900 dark:text-slate-50 font-bold text-sm">
                 <HelpCircle className="w-4 h-4 text-emerald-500" />
                 <span>Actionable Steps:</span>
               </div>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
                 {errorInfo.type === AnalysisErrorType.NETWORK && (
                   <>
                     <li className="flex items-start">
@@ -396,15 +454,15 @@ const App: React.FC = () => {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <button 
                   onClick={handleRunAnalysis} 
-                  className="px-8 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-md active:scale-95 flex items-center justify-center space-x-2"
+                  className="px-8 py-3 bg-slate-900 dark:bg-slate-950 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-md active:scale-95 flex items-center justify-center space-x-2"
                 >
                   <RefreshCcw className="w-4 h-4" />
                   <span>Retry Analysis</span>
                 </button>
-                <button onClick={backToTools} className="px-8 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-all shadow-sm active:scale-95">
+                <button onClick={backToTools} className="px-8 py-3 bg-white dark:bg-slate-900 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-bold hover:bg-slate-50 dark:bg-slate-800 transition-all shadow-sm active:scale-95">
                   Adjust Modules
                 </button>
-                <button onClick={reset} className="px-8 py-3 border border-transparent text-slate-400 hover:text-slate-600 rounded-xl font-bold transition-all text-sm">
+                <button onClick={reset} className="px-8 py-3 border border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-400 rounded-xl font-bold transition-all text-sm">
                   Cancel
                 </button>
               </div>
@@ -417,7 +475,7 @@ const App: React.FC = () => {
             <div className="mb-6 flex items-center justify-between">
               <button 
                 onClick={isViewingHistory ? openHistory : backToTools}
-                className="flex items-center text-slate-500 hover:text-emerald-600 font-bold transition-colors"
+                className="flex items-center text-slate-500 dark:text-slate-400 hover:text-emerald-600 font-bold transition-colors"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" /> 
                 {isViewingHistory ? 'Back to Archive' : 'Back to Selection'}
@@ -434,8 +492,8 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="bg-slate-50 border-t border-slate-200 py-8 text-center text-slate-400 text-sm">
-        <p>© 2025 ModularBioAnalyzer. Developed for Bacterial Whole Genome Analysis.</p>
+      <footer className="bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 dark:border-slate-800 py-8 text-center text-slate-400 text-sm">
+        <p>© 2025 NizamWGS Pro. Developed for Bacterial Whole Genome Analysis.</p>
       </footer>
     </div>
   );

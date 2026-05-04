@@ -80,7 +80,7 @@ const PhylogeneticTree: React.FC<Props> = ({ data, width = 800, height = 600 }) 
   }, [data, width, height]);
 
   return (
-    <div className="w-full h-full bg-slate-50/30 rounded-2xl overflow-hidden cursor-move border border-slate-100">
+    <div className="w-full h-full bg-slate-50 dark:bg-slate-800/30 rounded-2xl overflow-hidden cursor-move border border-slate-100 dark:border-slate-800">
       <svg 
         ref={svgRef} 
         width="100%" 

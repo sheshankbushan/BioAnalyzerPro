@@ -50,25 +50,25 @@ const BioPythonValidation: React.FC<{ report: any }> = ({ report }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <FlaskConical className="w-4 h-4 text-emerald-600" />
-          <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">BioPython Rigor Check</h4>
+          <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">BioPython Rigor Check</h4>
         </div>
         <div className="flex items-center space-x-1 bg-emerald-500 text-white px-2 py-0.5 rounded text-[10px] font-black uppercase">
           <CheckCircle2 className="w-3 h-3" />
           <span>Validated</span>
         </div>
       </div>
-      <p className="text-[11px] text-slate-600 leading-relaxed">
+      <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
         {report.summary}
       </p>
       {report.data && report.data[0] && (
         <div className="flex flex-wrap gap-2">
-          <div className="bg-white/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500">
+          <div className="bg-white dark:bg-slate-900 dark:bg-slate-950/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500 dark:text-slate-400">
             <span className="font-bold text-emerald-600 uppercase">Engine:</span> Pyodide WASM
           </div>
-          <div className="bg-white/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500">
+          <div className="bg-white dark:bg-slate-900 dark:bg-slate-950/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500 dark:text-slate-400">
             <span className="font-bold text-emerald-600 uppercase">Library:</span> BioPython 1.84+
           </div>
-          <div className="bg-white/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500">
+          <div className="bg-white dark:bg-slate-900 dark:bg-slate-950/60 border border-emerald-100 px-2 py-1 rounded text-[10px] text-slate-500 dark:text-slate-400">
             <span className="font-bold text-emerald-600 uppercase">Strict:</span> Deterministic
           </div>
         </div>
@@ -132,14 +132,14 @@ const ContigDistribution: React.FC<{ lengths: number[] }> = ({ lengths }) => {
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-end gap-0.5 h-24 items-end bg-slate-50/50 rounded-lg p-2 border border-slate-100">
+      <div className="flex items-end gap-0.5 h-24 items-end bg-slate-50 dark:bg-slate-800/50 rounded-lg p-2 border border-slate-100 dark:border-slate-800">
         {displayedLengths.map((len, i) => (
           <div 
             key={i}
             className="flex-1 bg-emerald-500 rounded-t-sm hover:bg-emerald-400 transition-all cursor-help relative group"
             style={{ height: `${(len / maxLen) * 100}%` }}
           >
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl border border-slate-700">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900 dark:bg-slate-950 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl border border-slate-700 dark:border-slate-800">
               Contig {i+1}: {(len/1000).toFixed(1)}kb
             </div>
           </div>
@@ -164,13 +164,13 @@ const GCHeatmap: React.FC<{ variation: number[] }> = ({ variation }) => {
 
   return (
     <div className="w-full space-y-3">
-      <div className="flex h-5 rounded-md overflow-hidden border border-slate-200 shadow-inner">
+      <div className="flex h-5 rounded-md overflow-hidden border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-inner">
         {variation.map((val, i) => (
           <div 
             key={i} 
             className={`flex-1 ${getGCColor(val)} transition-opacity hover:opacity-80 cursor-help relative group`}
           >
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl border border-slate-700">
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900 dark:bg-slate-950 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-xl border border-slate-700 dark:border-slate-800">
               Region {i+1}: {val.toFixed(1)}% GC
             </div>
           </div>
@@ -249,23 +249,23 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white dark:bg-slate-900 dark:bg-slate-950 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm">
         <div className="space-y-2">
           <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-2">
             Analysis Completed
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">{fileMeta.name}</h2>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-50 tracking-tight">{fileMeta.name}</h2>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
             <span className="flex items-center"><Database className="w-4 h-4 mr-1.5" /> {(fileMeta.size / 1024).toFixed(2)} KB</span>
             <span className="flex items-center"><ShieldCheck className="w-4 h-4 mr-1.5 text-emerald-500" /> Multi-Database Pipeline</span>
             <span className="flex items-center text-emerald-600 font-bold"><FlaskConical className="w-4 h-4 mr-1.5" /> BioPython Verified</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={() => window.print()} className="flex items-center px-5 py-2.5 border border-slate-300 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors shadow-sm">
+          <button onClick={() => window.print()} className="flex items-center px-5 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-700 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:bg-slate-800 transition-colors shadow-sm">
             <Download className="w-4 h-4 mr-2" /> PDF Report
           </button>
-          <button onClick={onReset} className="flex items-center px-5 py-2.5 bg-slate-900 text-white rounded-xl font-semibold hover:bg-slate-800 transition-colors shadow-lg">
+          <button onClick={onReset} className="flex items-center px-5 py-2.5 bg-slate-900 dark:bg-slate-950 text-white rounded-xl font-semibold hover:bg-slate-800 transition-colors shadow-lg">
             <RefreshCw className="w-4 h-4 mr-2" /> New Analysis
           </button>
         </div>
@@ -278,17 +278,17 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
           { label: 'Total Contigs', value: stats.contigCount },
           { label: 'Estimated N50', value: `${(stats.n50 / 1e3).toFixed(1)} kb` }
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-200 transition-colors">
+          <div key={i} className="bg-white dark:bg-slate-900 dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm hover:border-emerald-200 transition-colors">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{stat.label}</p>
-            <p className="text-2xl font-black text-slate-900">{stat.value}</p>
+            <p className="text-2xl font-black text-slate-900 dark:text-slate-50">{stat.value}</p>
           </div>
         ))}
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1 space-y-8">
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center">
-            <h3 className="text-lg font-bold text-slate-900 mb-6 w-full flex items-center">
+          <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm flex flex-col items-center">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-6 w-full flex items-center">
               <Activity className="w-5 h-5 mr-2 text-emerald-500" />
               Genome Map
             </h3>
@@ -302,7 +302,7 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
             <CircularMap gcContent={stats.gcContent} />
             
             <div className="mt-8 w-full space-y-6">
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800">
                 <h4 className="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center">
                   <BarChart3 className="w-3.5 h-3.5 mr-2" />
                   Length Distribution
@@ -310,7 +310,7 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
                 <ContigDistribution lengths={stats.lengths} />
               </div>
               
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800">
                 <h4 className="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center">
                   <Layers className="w-3.5 h-3.5 mr-2" />
                   GC Content Heatmap
@@ -318,7 +318,7 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
                 <GCHeatmap variation={stats.gcVariation} />
               </div>
 
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800">
                 <h4 className="text-xs font-bold text-slate-400 uppercase mb-3 flex items-center">
                   <Activity className="w-3.5 h-3.5 mr-2" />
                   GC Skew Variation
@@ -329,8 +329,8 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
           </div>
 
           {results.phylogeneticTree && (
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-              <h3 className="text-lg font-bold text-slate-900 mb-6 w-full flex items-center">
+            <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50 mb-6 w-full flex items-center">
                 <Network className="w-5 h-5 mr-2 text-emerald-500" />
                 Evolutionary Relationships
               </h3>
@@ -344,16 +344,16 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
           )}
 
           {blastSection && (
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest flex items-center">
+            <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm space-y-4">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-50 uppercase tracking-widest flex items-center">
                 <Search className="w-4 h-4 mr-2 text-emerald-500" />
                 NCBI BLAST Hits
               </h3>
               <div className="space-y-3">
                 {blastSection.rows.slice(0, 5).map((row, idx) => (
-                  <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-[11px] space-y-1 hover:border-emerald-200 transition-colors">
-                    <div className="font-bold text-slate-700 truncate">{row.Subject || row.Match || row.Sequence || 'Reference Hit'}</div>
-                    <div className="grid grid-cols-3 gap-2 text-slate-500 font-mono">
+                  <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800 text-[11px] space-y-1 hover:border-emerald-200 transition-colors">
+                    <div className="font-bold text-slate-700 dark:text-slate-300 truncate">{row.Subject || row.Match || row.Sequence || 'Reference Hit'}</div>
+                    <div className="grid grid-cols-3 gap-2 text-slate-500 dark:text-slate-400 font-mono">
                       <div><span className="text-[9px] uppercase block text-slate-400">ID%</span>{row.Identity || row['Identity (%)'] || row.Ident || '-'}</div>
                       <div><span className="text-[9px] uppercase block text-slate-400">E-Val</span>{row['E-value'] || row.Evalue || row.E || '-'}</div>
                       <div><span className="text-[9px] uppercase block text-slate-400">Cov%</span>{row.Coverage || row.Cov || row['Cover (%)'] || '-'}</div>
@@ -366,7 +366,7 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
           )}
 
           {commands.length > 0 && (
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-700 shadow-xl">
+            <div className="bg-slate-900 dark:bg-slate-950 p-6 rounded-3xl border border-slate-700 dark:border-slate-800 shadow-xl">
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center">
                 <TerminalIcon className="w-4 h-4 mr-2" />
                 Validation Commands
@@ -374,7 +374,7 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
               <div className="space-y-4">
                 {commands.map((cmd, idx) => (
                   <div key={idx} className="relative group">
-                    <pre className="text-[10px] font-mono bg-slate-800/80 p-4 rounded-xl border border-slate-700 overflow-x-auto text-emerald-300 leading-relaxed">
+                    <pre className="text-[10px] font-mono bg-slate-800/80 p-4 rounded-xl border border-slate-700 dark:border-slate-800 overflow-x-auto text-emerald-300 leading-relaxed">
                       {cmd}
                     </pre>
                     <button 
@@ -395,10 +395,10 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
             otherSections.map((section, idx) => {
               const dbSource = getDBSource(section.title);
               return (
-                <div key={idx} className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2">
-                  <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div key={idx} className="bg-white dark:bg-slate-900 dark:bg-slate-950 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-2">
+                  <div className="px-8 py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
                     <div className="space-y-1">
-                      <h3 className="font-bold text-slate-900 flex items-center text-lg">
+                      <h3 className="font-bold text-slate-900 dark:text-slate-50 flex items-center text-lg">
                         <FileCheck className="w-5 h-5 mr-2 text-emerald-500" />
                         {section.title}
                       </h3>
@@ -421,10 +421,10 @@ const GenomeDashboard: React.FC<Props> = ({ results, fileMeta, onReset }) => {
               );
             })
           ) : (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-12 text-center flex flex-col items-center">
+            <div className="bg-white dark:bg-slate-900 dark:bg-slate-950 rounded-3xl border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-sm p-12 text-center flex flex-col items-center">
               <Database className="w-16 h-16 text-slate-100 mb-4" />
-              <div className="bg-slate-50 p-8 rounded-2xl border border-dashed border-slate-300 w-full">
-                <p className="text-slate-500 font-mono text-sm leading-relaxed whitespace-pre-wrap text-left">
+              <div className="bg-slate-50 dark:bg-slate-800 p-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 w-full">
+                <p className="text-slate-500 dark:text-slate-400 font-mono text-sm leading-relaxed whitespace-pre-wrap text-left">
                   {rawOutput}
                 </p>
               </div>

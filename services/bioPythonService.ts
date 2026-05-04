@@ -11,15 +11,8 @@ export async function getPyodide() {
     indexURL: "https://cdn.jsdelivr.net/pyodide/v0.29.3/full/"
   });
 
-  // Load micropip as a standard package
-  await pyodideInstance.loadPackage("micropip");
-  
-  // Use runPythonAsync to handle the await-based installation within Python
-  // This is more robust for biopython which has several dependencies
-  await pyodideInstance.runPythonAsync(`
-    import micropip
-    await micropip.install("biopython")
-  `);
+  // Load biopython as a standard package directly
+  await pyodideInstance.loadPackage("biopython");
 
   console.log("BioPython installed successfully.");
   return pyodideInstance;

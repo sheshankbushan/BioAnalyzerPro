@@ -35,8 +35,8 @@ const FileUploader: React.FC<Props> = ({ onFileSelect }) => {
 
   return (
     <div 
-      className={`relative group bg-white border-2 border-dashed rounded-3xl p-12 text-center transition-all cursor-pointer
-        ${isDragging ? 'border-emerald-500 bg-emerald-50 scale-[1.01]' : 'border-slate-300 hover:border-emerald-400 hover:bg-slate-50'}
+      className={`relative group bg-white dark:bg-slate-900 dark:bg-slate-950 border-2 border-dashed rounded-3xl p-12 text-center transition-all cursor-pointer
+        ${isDragging ? 'border-emerald-500 bg-emerald-50 scale-[1.01]' : 'border-slate-300 dark:border-slate-600 hover:border-emerald-400 hover:bg-slate-50 dark:bg-slate-800'}
       `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -56,19 +56,19 @@ const FileUploader: React.FC<Props> = ({ onFileSelect }) => {
           <Upload className="w-10 h-10 text-emerald-600" />
         </div>
         <div className="space-y-1">
-          <p className="text-xl font-bold text-slate-900">Select Genomic File</p>
-          <p className="text-slate-500">Drag and drop .fasta or .fastq files here</p>
+          <p className="text-xl font-bold text-slate-900 dark:text-slate-50">Select Genomic File</p>
+          <p className="text-slate-500 dark:text-slate-400">Drag and drop .fasta or .fastq files here</p>
         </div>
         <div className="flex flex-wrap justify-center gap-3 pt-4">
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 rounded-full text-xs font-medium text-slate-600">
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-medium text-slate-600 dark:text-slate-400">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
             <span>Assembly (FASTA)</span>
           </div>
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 rounded-full text-xs font-medium text-slate-600">
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-medium text-slate-600 dark:text-slate-400">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
             <span>Reads (FASTQ)</span>
           </div>
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 rounded-full text-xs font-medium text-slate-600">
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-xs font-medium text-slate-600 dark:text-slate-400">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
             <span>Multi-contig</span>
           </div>

@@ -18,7 +18,7 @@ const ResultsTable: React.FC<Props> = ({ data }) => {
 
     if (isID) {
       return (
-        <span className="font-mono text-[11px] bg-slate-100 text-slate-700 px-2 py-1 rounded border border-slate-200 font-bold">
+        <span className="font-mono text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 dark:border-slate-800 font-bold">
           {val}
         </span>
       );
@@ -40,14 +40,14 @@ const ResultsTable: React.FC<Props> = ({ data }) => {
       );
     }
 
-    return <span className="text-slate-600 font-medium">{val}</span>;
+    return <span className="text-slate-600 dark:text-slate-400 font-medium">{val}</span>;
   };
 
   return (
     <div className="min-w-full inline-block align-middle">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-slate-50/50 border-b border-slate-100">
+          <tr className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
             {headers.map(header => (
               <th key={header} className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                 {header}
@@ -55,7 +55,7 @@ const ResultsTable: React.FC<Props> = ({ data }) => {
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 bg-white">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900 dark:bg-slate-950">
           {data.map((row, i) => (
             <tr key={i} className="hover:bg-emerald-50/20 transition-all duration-200 group">
               {headers.map(header => (

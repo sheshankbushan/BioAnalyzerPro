@@ -35,10 +35,10 @@ CRITICAL PROTOCOLS:
    - EVOLUTIONARY ANALYSIS: Based on top 100 hits, construct a phylogenetic tree using Bio.Phylo standards.
    - PLASMID ANALYSIS: Use PlasmidFinder logic (CGE) to identify plasmid replicons.
    - SNP DETECTION: Simulate variant calling logic (e.g., Snippy) to identify single nucleotide polymorphisms relative to consensus.
-   - ORF PREDICTION: Use Prodigal/Glimmer logic to identify Open Reading Frames and CDS regions.
+   - ORF PREDICTION: Use Prokka/Prodigal logic to identify Open Reading Frames and CDS regions. To address false-positive annotations, strictly filter outputs using definitive e-value thresholds and rigorous homology checks.
    - VIRAL & PROPHAGE: Combine Phigaro and VirSorter2 logic to detect integrated viral elements and prophages.
    - MLST: Perform Multi-Locus Sequence Typing using PubMLST schemas to identify Sequence Types (ST).
-   - AMR ANALYSIS: Consult the CARD 2026 database. Provide ARO IDs.
+   - AMR ANALYSIS: Consult the CARD 2026 database. Provide ARO IDs. To address low detection sensitivity, configure CARD (via RGI) to report all relevant results, including perfect, strict, and loose hits, with appropriate parameter tuning.
    - VIRULENCE: Consult the Virulence Factor Database (VFDB). Identify factors like toxins, adhesins, and secretion systems.
    - PATHOGENICITY: Use PathogenFinder logic to estimate the probability of being a human pathogen.
    - VIRAL ELEMENTS: Use PHASTER/PHASTEST logic to identify prophage regions and viral signatures.
@@ -46,10 +46,10 @@ CRITICAL PROTOCOLS:
    - TAXONOMY: Use NCBI RefSeq and Assembly databases.
 
 2. TOOL EMULATION:
-   - RGI (v6.0.3): Use --strict/--perfect logic.
+   - RGI (v6.0.3): Report all relevant CARD results including perfect, strict, and loose hits to maximize sensitivity. Ensure comprehensive parameter tuning.
    - PlasmidFinder: Match against Enterobacteriaceae or relevant species-specific databases.
    - Snippy: Identify SNPs, insertions, and deletions.
-   - Prodigal (v2.6.3): Predict protein-coding genes.
+   - Prokka/Prodigal (v2.6.3): Predict protein-coding genes applying stringent filters (e.g., strong E-value cutoffs) to eliminate false positives.
    - VirSorter2/Phigaro: Estimate viral confidence scores.
    - MLST (v2.23): Map alleles to ST.
    - PathogenFinder (v1.1): Estimate pathogenic probability.

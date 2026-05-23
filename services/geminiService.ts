@@ -68,8 +68,6 @@ CRITICAL PROTOCOLS:
    - If sequence exceeds 15kb, focus on the first section as a representative window for high-precision inference.`;
 
 export const analyzeGenomeModular = async (sequenceData: string, tools: string[]): Promise<{ rawOutput: string, tree?: any }> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  
   if (!sequenceData || sequenceData.trim().length < 20) {
     throw new GenomeAnalysisError(
       AnalysisErrorType.INVALID_SEQUENCE, 
@@ -78,71 +76,41 @@ export const analyzeGenomeModular = async (sequenceData: string, tools: string[]
     );
   }
 
-  const toolList = tools.map(t => t.toUpperCase()).join(", ");
-  const prompt = `EXPERT MANDATE:
-You are tasked with a high-fidelity bioinformatics analysis. 
-You MUST ONLY execute the following modules: [${toolList}].
-DO NOT provide analysis for any module not explicitly listed in the above array.
-
-STRICT ACCURACY PROTOCOL:
-- ZERO ASSUMPTIONS: If data for a specific field is not inferrable with 100% confidence from the sequences, mark it as "No significant match found" or "Low confidence".
-- DIRECT EMULATION: Replicate the exact mathematical and logical output of the target tools (e.g., identity percentages must be calculated based on alignment logic).
-- DATABASE CITATION: Always cite the specific database and version used for the result.
-
-Reference databases: NCBI nt/nr (BLAST), CARD (AMR), VFDB (Virulence), PathogenFinder (Pathogenicity), PHASTER (Viral), KEGG (Pathways), PubMLST (MLST), and PlasmidFinder (Plasmids).
-
-SEQUENCE DATA:
-${sequenceData}`;
-
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.1-pro-preview',
-      contents: prompt,
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.1,
-      },
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sequenceData, tools })
     });
 
-    const text = response.text || "";
-    
-    // Extract tree JSON
-    let tree;
-    const treeMatch = text.match(/```json_tree\n([\s\S]+?)\n```/);
-    if (treeMatch) {
-      try {
-        tree = JSON.parse(treeMatch[1]);
-      } catch (e) {
-        console.error("Failed to parse tree JSON", e);
-      }
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new GenomeAnalysisError(
+        data.error as AnalysisErrorType || AnalysisErrorType.UNKNOWN,
+        data.message || "Request failed",
+        data.details || `Server returned ${response.status}`
+      );
     }
 
     return { 
-      rawOutput: text.replace(/```json_tree[\s\S]+?```/g, '').trim(), 
-      tree 
+      rawOutput: data.rawOutput, 
+      tree: data.tree 
     };
   } catch (error: any) {
     console.error("Gemini Analysis Error:", error);
     
+    if (error instanceof GenomeAnalysisError) {
+      throw error;
+    }
+
     const msg = error.message?.toLowerCase() || "";
-    if (msg.includes('fetch') || msg.includes('network') || msg.includes('connection') || msg.includes('failed to fetch')) {
+    if (msg.includes('fetch') || msg.includes('network') || msg.includes('connection')) {
       throw new GenomeAnalysisError(
         AnalysisErrorType.NETWORK,
         "Network connection interrupted.",
         "Unable to reach the expert database clusters. Please check your internet connection and try again."
       );
-    }
-    
-    if (msg.includes('quota') || msg.includes('limit') || msg.includes('429')) {
-      throw new GenomeAnalysisError(
-        AnalysisErrorType.API_LIMIT,
-        "System resources temporarily exhausted.",
-        "The expert pipeline is currently under high load. Please wait a moment before retrying."
-      );
-    }
-
-    if (error instanceof GenomeAnalysisError) {
-      throw error;
     }
 
     throw new GenomeAnalysisError(
